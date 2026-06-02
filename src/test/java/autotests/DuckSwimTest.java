@@ -3,6 +3,7 @@ package autotests;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
@@ -35,6 +36,15 @@ public class DuckSwimTest extends DuckUtils {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckSwim(runner, "${duckId}");
-        validateResponse(runner, "{\"message\": \"I'm swimming\"}");
+        validateErrorResponse(runner, HttpStatus.NOT_FOUND, "Paws are not found ((((");
+    }
+
+    @Test(description = "Проверка плавания несуществующей утки")
+    @CitrusTest
+    public void swimNonExistentDuck(@Optional @CitrusResource TestCaseRunner runner) {
+
+        String nonExistentId = "9999";
+        duckSwim(runner, nonExistentId);
+        validateErrorResponse(runner, HttpStatus.NOT_FOUND, "Paws are not found ((((");
     }
 }

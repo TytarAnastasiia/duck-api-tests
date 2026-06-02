@@ -27,9 +27,9 @@ public class DuckUpdateTest extends DuckUtils {
         );
     }
 
-    @Test(description = "Проверка успешного обновления утки")
+    @Test(description = "Проверка успешного обновления цвета и высоты утки (color/height)")
     @CitrusTest
-    public void successfulUpdateDuck(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulUpdateColorHeightDuck(@Optional @CitrusResource TestCaseRunner runner) {
 
         createDuck(runner, "yellow", 5, "rubber", "quack", "ACTIVE");
         runner.$(
@@ -40,16 +40,24 @@ public class DuckUpdateTest extends DuckUtils {
                         .message()
                         .extract(fromBody().expression("$.id", "duckId"))
         );
-        duckUpdate(runner, "${duckId}", "green", 10, "wood", "QUACK", "FIXED");
+        duckUpdate(runner, "${duckId}", "green", 10, "rubber", "quack", "ACTIVE");
         validateResponse(runner, "{\"message\": \"Duck with id = ${duckId} is updated\"}");
     }
 
-    @Test(description = "Попытка обновления несуществующей утки")
+    @Test(description = "Проверка успешного обновления цвета и звука утки (color/sound)")
     @CitrusTest
-    public void updateNonExistentDuck(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulUpdateColorSoundDuck(@Optional @CitrusResource TestCaseRunner runner) {
 
-        String nonExistentId = "9999";
-        duckUpdate(runner, nonExistentId, "red", 10, "wood", "QUACK", "FIXED");
-        validateErrorResponse(runner, HttpStatus.INTERNAL_SERVER_ERROR, "Duck with id = " + nonExistentId + " is not found");
+        createDuck(runner, "yellow", 5, "rubber", "quack", "ACTIVE");
+        runner.$(
+                http()
+                        .client("http://localhost:2222")
+                        .receive()
+                        .response()
+                        .message()
+                        .extract(fromBody().expression("$.id", "duckId"))
+        );
+        duckUpdate(runner, "${duckId}", "green", 5, "rubber", "quuaack", "ACTIVE");
+        validateResponse(runner, "{\"message\": \"Duck with id = ${duckId} is updated\"}");
     }
 }

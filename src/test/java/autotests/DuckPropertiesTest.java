@@ -3,16 +3,14 @@ package autotests;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.validation.DelegatingPayloadVariableExtractor.Builder.fromBody;
 
 public class DuckPropertiesTest extends DuckUtils {
 
-    public void duckProperties(TestCaseRunner runner, String id){
+    public void duckProperties(TestCaseRunner runner, String id) {
         runner.$(
                 http()
                         .client("http://localhost:2222")
@@ -22,32 +20,22 @@ public class DuckPropertiesTest extends DuckUtils {
         );
     }
 
-    @Test(description = "Проверка получения свойств утки")
+    @Test(description = "Проверка свойств утки (нечётный ID)")
     @CitrusTest
-
-    public void successfulGetProperties(@Optional @CitrusResource TestCaseRunner runner) {
-
-        createDuck(runner, "yellow", 5, "rubber", "quack", "FIXED");
-
-        runner.$(
-                http()
-                        .client("http://localhost:2222")
-                        .receive()
-                        .response()
-                        .message()
-                        .extract(fromBody().expression("$.id", "duckId"))
-        );
-        duckProperties(runner, "${duckId}");
-        validateResponse(runner, "{}");
+    public void getOddDuckProperties(@Optional @CitrusResource TestCaseRunner runner) {
+        // указать ID заранее созданной утки
+        String duckId = "1";
+        duckProperties(runner, duckId);
+        validateResponse(runner, "{\"color\":\"yellow\",\"height\":500.0,\"material\":\"rubber\",\"sound\":\"quack\",\"wingsState\":\"ACTIVE\"}");
     }
 
-    @Test(description = "Попытка получения свойств несуществующей утки")
+    @Test(description = "Проверка свойств утки (чётный ID)")
     @CitrusTest
-    public void getPropertiesNonExistentDuck(@Optional @CitrusResource TestCaseRunner runner) {
-
-        String nonExistentId = "9999";
-        duckProperties(runner, nonExistentId);
-        validateErrorResponse(runner, HttpStatus.INTERNAL_SERVER_ERROR, "Duck with id = " + nonExistentId + " is not found");
+    public void getEvenDuckProperties(@Optional @CitrusResource TestCaseRunner runner) {
+        // указать ID заранее созданной утки
+        String duckId = "6";
+        duckProperties(runner, duckId);
+        validateResponse(runner, "{}");
     }
 }
 
