@@ -1,6 +1,7 @@
 package autotests.tests;
 
 import autotests.clients.DuckActionClient;
+import autotests.payloads.request.DuckCreate;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -17,7 +18,14 @@ public class DuckFlyTest extends DuckActionClient {
     @CitrusTest
     public void successfulFlyFixed(@Optional @CitrusResource TestCaseRunner runner) {
 
-        createDuck(runner, "yellow", 5, "rubber", "quack", "FIXED");
+        DuckCreate properties = new DuckCreate()
+                .color("yellow")
+                .height(5.0)
+                .material("rubber")
+                .sound("quack")
+                .wingsState("FIXED");
+
+        createDuck(runner, properties);
         runner.$(
                 http()
                         .client(duckService)
@@ -34,7 +42,14 @@ public class DuckFlyTest extends DuckActionClient {
     @CitrusTest
     public void successfulFlyUndefined(@Optional @CitrusResource TestCaseRunner runner) {
 
-        createDuck(runner, "yellow", 5, "rubber", "quack", "UNDEFINED");
+        DuckCreate properties = new DuckCreate()
+                .color("yellow")
+                .height(5.0)
+                .material("rubber")
+                .sound("quack")
+                .wingsState("UNDEFINED");
+
+        createDuck(runner, properties);
         runner.$(
                 http()
                         .client(duckService)
@@ -51,7 +66,14 @@ public class DuckFlyTest extends DuckActionClient {
     @CitrusTest
     public void successfulFlyActive(@Optional @CitrusResource TestCaseRunner runner) {
 
-        createDuck(runner, "yellow", 5, "rubber", "quack", "ACTIVE");
+        DuckCreate properties = new DuckCreate()
+                .color("yellow")
+                .height(5.0)
+                .material("rubber")
+                .sound("quack")
+                .wingsState("ACTIVE");
+
+        createDuck(runner, properties);
         runner.$(
                 http()
                         .client(duckService)

@@ -1,15 +1,16 @@
 package autotests.clients;
 
-import autotests.BaseTest;
 import autotests.EndpointConfig;
 import com.consol.citrus.TestCaseRunner;
+import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
-public class DuckActionClient extends BaseTest {
+public class DuckActionClient extends DuckClient {
 
     public void duckFly(TestCaseRunner runner, String id) {
         runner.$(
@@ -43,20 +44,15 @@ public class DuckActionClient extends BaseTest {
         );
     }
 
-    public void createDuck(TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
-        runner.$(http()
+    public void createDuck(TestCaseRunner runner, Object userData) {
+        runner.$(
+                http()
                 .client(duckService)
                 .send()
                 .post("/api/duck/create")
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("{\n" +
-                        "    \"color\": \"" + color + "\",\n" +
-                        "    \"height\": " + height + ",\n" +
-                        "    \"material\": \"" + material + "\",\n" +
-                        "    \"sound\": \"" + sound + "\",\n" +
-                        "    \"wingsState\": \"" + wingsState + "\"\n" +
-                        "}"));
+                .body(new ObjectMappingPayloadBuilder(userData, new ObjectMapper())));
     }
 
     public void duckDelete(TestCaseRunner runner, String id) {

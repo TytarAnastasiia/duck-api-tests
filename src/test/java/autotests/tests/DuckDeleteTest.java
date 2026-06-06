@@ -1,6 +1,7 @@
 package autotests.tests;
 
 import autotests.clients.DuckActionClient;
+import autotests.payloads.request.DuckCreate;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -17,7 +18,14 @@ public class DuckDeleteTest extends DuckActionClient {
     @CitrusTest
     public void successfulDeleteDuck(@Optional @CitrusResource TestCaseRunner runner) {
 
-        createDuck(runner, "yellow", 5, "rubber", "quack", "ACTIVE");
+        DuckCreate properties = new DuckCreate()
+                .color("yellow")
+                .height(5.0)
+                .material("rubber")
+                .sound("quack")
+                .wingsState("ACTIVE");
+
+        createDuck(runner, properties);
         runner.$(
                 http()
                         .client(duckService)
