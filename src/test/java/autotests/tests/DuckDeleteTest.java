@@ -2,6 +2,7 @@ package autotests.tests;
 
 import autotests.clients.DuckActionClient;
 import autotests.payloads.request.DuckCreate;
+import autotests.payloads.response.DuckDeleteResponse;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -35,6 +36,10 @@ public class DuckDeleteTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckDelete(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\"message\": \"Duck is deleted\"}");
+
+        DuckDeleteResponse expectedResponse = new DuckDeleteResponse()
+                .message("Duck is deleted");
+
+        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
     }
 }

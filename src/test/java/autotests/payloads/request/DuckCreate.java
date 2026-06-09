@@ -1,6 +1,7 @@
 package autotests.payloads.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -12,15 +13,15 @@ import lombok.experimental.Accessors;
 
 public class DuckCreate {
 
-    @JsonInclude
+    @JsonProperty
     private String color;
-    @JsonInclude
+    @JsonProperty
     private Double height;
-    @JsonInclude
+    @JsonProperty
     private String material;
-    @JsonInclude
+    @JsonProperty
     private String sound;
-    @JsonInclude
+    @JsonProperty
     private String wingsState;
 
 }

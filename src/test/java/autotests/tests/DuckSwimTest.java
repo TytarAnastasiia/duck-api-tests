@@ -2,6 +2,7 @@ package autotests.tests;
 
 import autotests.clients.DuckActionClient;
 import autotests.payloads.request.DuckCreate;
+import autotests.payloads.response.DuckSwimResponse;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -36,7 +37,11 @@ public class DuckSwimTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckSwim(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.NOT_FOUND, "{\"message\": \"Paws are not found ((((\"}");
+
+        DuckSwimResponse expectedResponse = new DuckSwimResponse()
+                .message("Paws are not found ((((");
+
+        validateResponsePayloads(runner, HttpStatus.NOT_FOUND, expectedResponse);
     }
 
     //код статуса: 404, в сообщении указано, что не найдены лапки
@@ -47,6 +52,10 @@ public class DuckSwimTest extends DuckActionClient {
 
         String nonExistentId = "9999";
         duckSwim(runner, nonExistentId);
-        validateResponse(runner, HttpStatus.NOT_FOUND, "{\"message\": \"Paws are not found ((((\"}");
+
+        DuckSwimResponse expectedResponse = new DuckSwimResponse()
+                .message("Paws are not found ((((");
+
+        validateResponsePayloads(runner, HttpStatus.NOT_FOUND, expectedResponse);
     }
 }

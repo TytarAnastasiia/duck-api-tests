@@ -2,6 +2,7 @@ package autotests.tests;
 
 import autotests.clients.DuckActionClient;
 import autotests.payloads.request.DuckCreate;
+import autotests.payloads.response.DuckUpdateResponse;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -35,7 +36,11 @@ public class DuckUpdateTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckUpdate(runner, "${duckId}", "green", 10, "rubber", "quack", "ACTIVE");
-        validateResponse(runner, HttpStatus.OK, "{\"message\": \"Duck with id = ${duckId} is updated\"}");
+
+        DuckUpdateResponse expectedResponse = new DuckUpdateResponse()
+                .message("Duck with id = ${duckId} is updated");
+
+        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
     }
 
     @Test(description = "Проверка успешного обновления цвета и звука утки (color/sound)")
@@ -59,6 +64,10 @@ public class DuckUpdateTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckUpdate(runner, "${duckId}", "green", 5, "rubber", "quuaack", "ACTIVE");
-        validateResponse(runner, HttpStatus.OK, "{\"message\": \"Duck with id = ${duckId} is updated\"}");
+
+        DuckUpdateResponse expectedResponse = new DuckUpdateResponse()
+                .message("Duck with id = ${duckId} is updated");
+
+        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
     }
 }

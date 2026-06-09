@@ -2,6 +2,7 @@ package autotests.tests;
 
 import autotests.clients.DuckActionClient;
 import autotests.payloads.request.DuckCreate;
+import autotests.payloads.response.DuckFlyResponse;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -35,7 +36,11 @@ public class DuckFlyTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\"message\": \"I can not fly :C\"}");
+
+        DuckFlyResponse expectedResponse = new DuckFlyResponse()
+                .message("I can not fly :C");
+
+        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
     }
 
     @Test(description = "Проверка полёта утки с wingsState=UNDEFINED")
@@ -59,7 +64,11 @@ public class DuckFlyTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\"message\": \"Wings are not detected :(\"}");
+
+        DuckFlyResponse expectedResponse = new DuckFlyResponse()
+                .message("Wings are not detected :(");
+
+        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
     }
 
     @Test(description = "Проверка полёта утки с wingsState=ACTIVE")
@@ -83,6 +92,10 @@ public class DuckFlyTest extends DuckActionClient {
                         .extract(fromBody().expression("$.id", "duckId"))
         );
         duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\"message\": \"I am flying :)\"}");
+
+        DuckFlyResponse expectedResponse = new DuckFlyResponse()
+                .message("I am flying :)");
+
+        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
     }
 }
