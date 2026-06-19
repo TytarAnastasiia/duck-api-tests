@@ -1,0 +1,67 @@
+package autotests.clients;
+
+import autotests.BaseTest;
+import autotests.EndpointConfig;
+import com.consol.citrus.TestCaseRunner;
+import com.consol.citrus.message.MessageType;
+import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+
+import static com.consol.citrus.actions.ExecuteSQLQueryAction.Builder.query;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.validation.DelegatingPayloadVariableExtractor.Builder.fromBody;
+
+@ContextConfiguration(classes = {EndpointConfig.class})
+public class DuckClient extends BaseTest {
+
+    //валидация данных с использованием ресурсов resources
+    public void validateResponseResources(TestCaseRunner runner, HttpStatus status, String expectedPayload) {
+        runner.$(
+                http()
+                        .client(duckService)
+                        .receive()
+                        .response(status)
+                        .message()
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .type(expectedPayload)
+                        .extract(fromBody().expression("$.id", "duckId"))
+                        .body(new ClassPathResource(expectedPayload))
+        );
+    }
+
+    //валидация через бд
+    protected void validateDuckInDatabase(TestCaseRunner runner, String id, String color, String height, String material, String sound, String wingsState) {
+        runner.$(query(testDb)
+                .statement("SELECT * FROM DUCK WHERE ID = ${duckId}")
+                .validate("COLOR", color)
+                .validate("HEIGHT", height)
+                .validate("MATERIAL", material)
+                .validate("SOUND", sound)
+                .validate("WINGS_STATE", wingsState)
+        );
+    }
+
+    //проверка удаления утки
+    protected void validateDuckIsDeletedInDb(TestCaseRunner runner) {
+        runner.$(query(testDb)
+                .statement("SELECT COUNT(*) AS cnt FROM DUCK WHERE ID = ${duckId}")
+                .validate("cnt", "0")
+        );
+    }
+
+    //извлечение id
+    public void extractDuckId(TestCaseRunner runner) {
+        runner.$(
+                http()
+                        .client(duckService)
+                        .receive()
+                        .response()
+                        .message()
+                        .extract(fromBody().expression("$.id", "duckId"))
+        );
+    }
+}
