@@ -1,6 +1,6 @@
 package autotests.tests;
 
-import autotests.clients.DuckActionClient;
+import autotests.clients.DuckSwimClient;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 import static com.consol.citrus.validation.DelegatingPayloadVariableExtractor.Builder.fromBody;
 
-public class DuckSwimTest extends DuckActionClient {
+public class DuckSwimTest extends DuckSwimClient {
 
     //код статуса: 404, в сообщении указано, что не найдены лапки
     @Test(description = "Проверка плавания утки")

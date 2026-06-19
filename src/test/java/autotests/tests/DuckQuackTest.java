@@ -1,6 +1,6 @@
 package autotests.tests;
 
-import autotests.clients.DuckActionClient;
+import autotests.clients.DuckQuackClient;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
-public class DuckQuackTest extends DuckActionClient {
+public class DuckQuackTest extends DuckQuackClient {
 
     //перепутана логика параметров repetitionCount и soundCount
     //(repetitionCount отвечает за количество звуков, а soundCount за количество повторений)

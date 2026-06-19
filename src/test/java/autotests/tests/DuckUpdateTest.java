@@ -1,6 +1,6 @@
 package autotests.tests;
 
-import autotests.clients.DuckActionClient;
+import autotests.clients.DuckUpdateClient;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 import static com.consol.citrus.validation.DelegatingPayloadVariableExtractor.Builder.fromBody;
 
-public class DuckUpdateTest extends DuckActionClient {
+public class DuckUpdateTest extends DuckUpdateClient {
 
     @Test(description = "Проверка успешного обновления цвета и высоты утки (color/height)")
     @CitrusTest
