@@ -31,5 +31,6 @@ public class DuckDeleteTest extends DuckActionClient {
                 .message("Duck is deleted");
 
         validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
+        validateDuckIsDeletedInDb(runner);
     }
 }

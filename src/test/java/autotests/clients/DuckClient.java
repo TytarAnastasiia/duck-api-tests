@@ -7,6 +7,7 @@ import com.consol.citrus.message.MessageType;
 import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Step;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class DuckClient extends TestNGCitrusSpringSupport {
                 .statement(sql));
     }
 
-    //валидация данных
+    @Step("Валидация данных")
     public void validateResponse(TestCaseRunner runner, HttpStatus status, String responseMessage) {
         runner.$(
                 http()
@@ -46,7 +47,7 @@ public class DuckClient extends TestNGCitrusSpringSupport {
         );
     }
 
-    //валидация данных с использованием ресурсов resources
+    @Step("Валидация данных с использованием resources")
     public void validateResponseResources(TestCaseRunner runner, HttpStatus status, String expectedPayload) {
         runner.$(
                 http()
@@ -61,7 +62,7 @@ public class DuckClient extends TestNGCitrusSpringSupport {
         );
     }
 
-    //валидация данных с использованием payloads
+    @Step("Валидация данных с использованием payloads")
     public void validateResponsePayloads(TestCaseRunner runner, HttpStatus status, Object expectedPayload) {
         runner.$(
                 http()
@@ -74,7 +75,7 @@ public class DuckClient extends TestNGCitrusSpringSupport {
         );
     }
 
-    //валидация через бд
+    @Step("Валидация через базу данных")
     protected void validateDuckInDatabase(TestCaseRunner runner, String id, String color, String height, String material, String sound, String wingsState) {
         runner.$(query(testDb)
                 .statement("SELECT * FROM DUCK WHERE ID = ${duckId}")
@@ -83,6 +84,14 @@ public class DuckClient extends TestNGCitrusSpringSupport {
                 .validate("MATERIAL", material)
                 .validate("SOUND", sound)
                 .validate("WINGS_STATE", wingsState)
+        );
+    }
+
+    @Step("Валидация удаления утки через базу данных")
+    protected void validateDuckIsDeletedInDb(TestCaseRunner runner) {
+        runner.$(query(testDb)
+                .statement("SELECT COUNT(*) AS cnt FROM DUCK WHERE ID = ${duckId}")
+                .validate("cnt", "0")
         );
     }
 }
