@@ -31,7 +31,7 @@ public class DuckQuackTest extends DuckActionClient {
                         "values (${duckId}, 'yellow', 5.0, 'rubber', 'quack', 'ACTIVE');");
 
         duckQuack(runner, "${duckId}", 3, 2);
-        validateResponse(runner, HttpStatus.OK, "{\"sound\": \"quack-quack-quack, quack-quack-quack\"}");
+        validateResponse(runner, duckService, HttpStatus.OK, "{\"sound\": \"quack-quack-quack, quack-quack-quack\"}");
     }
 
     //перепутана логика параметров repetitionCount и soundCount
@@ -50,6 +50,6 @@ public class DuckQuackTest extends DuckActionClient {
                         "values (${duckId}, 'yellow', 5.0, 'rubber', 'quack', 'ACTIVE');");
 
         duckQuack(runner, "${duckId}", 3, 2);
-        validateResponse(runner, HttpStatus.OK, "{\"sound\": \"moo-moo-moo, moo-moo-moo\"}");
+        validateResponse(runner, duckService, HttpStatus.OK, "{\"sound\": \"moo-moo-moo, moo-moo-moo\"}");
     }
 }

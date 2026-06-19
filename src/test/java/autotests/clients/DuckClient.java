@@ -33,19 +33,6 @@ public class DuckClient extends BaseTest {
         );
     }
 
-    //валидация данных с использованием payloads
-    public void validateResponsePayloads(TestCaseRunner runner, HttpStatus status, Object expectedPayload) {
-        runner.$(
-                http()
-                        .client(duckService)
-                        .receive()
-                        .response(status)
-                        .message()
-                        .type(MessageType.JSON)
-                        .body(new ObjectMappingPayloadBuilder(expectedPayload, new ObjectMapper()))
-        );
-    }
-
     //валидация через бд
     protected void validateDuckInDatabase(TestCaseRunner runner, String id, String color, String height, String material, String sound, String wingsState) {
         runner.$(query(testDb)

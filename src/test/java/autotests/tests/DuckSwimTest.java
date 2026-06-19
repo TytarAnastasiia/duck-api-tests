@@ -35,7 +35,7 @@ public class DuckSwimTest extends DuckActionClient {
         DuckSwimResponse expectedResponse = new DuckSwimResponse()
                 .message("Paws are not found ((((");
 
-        validateResponsePayloads(runner, HttpStatus.NOT_FOUND, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.NOT_FOUND, expectedResponse);
     }
 
     //код статуса: 404, в сообщении указано, что не найдены лапки
@@ -50,6 +50,6 @@ public class DuckSwimTest extends DuckActionClient {
         DuckSwimResponse expectedResponse = new DuckSwimResponse()
                 .message("Paws are not found ((((");
 
-        validateResponsePayloads(runner, HttpStatus.NOT_FOUND, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.NOT_FOUND, expectedResponse);
     }
 }

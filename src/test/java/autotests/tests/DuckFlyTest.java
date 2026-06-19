@@ -34,7 +34,7 @@ public class DuckFlyTest extends DuckActionClient {
         DuckFlyResponse expectedResponse = new DuckFlyResponse()
                 .message("I can not fly :C");
 
-        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.OK, expectedResponse);
     }
 
     @Test(description = "Проверка полёта утки с wingsState=UNDEFINED")
@@ -54,7 +54,7 @@ public class DuckFlyTest extends DuckActionClient {
         DuckFlyResponse expectedResponse = new DuckFlyResponse()
                 .message("Wings are not detected :(");
 
-        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.OK, expectedResponse);
     }
 
     @Test(description = "Проверка полёта утки с wingsState=ACTIVE")
@@ -74,6 +74,6 @@ public class DuckFlyTest extends DuckActionClient {
         DuckFlyResponse expectedResponse = new DuckFlyResponse()
                 .message("I am flying :)");
 
-        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.OK, expectedResponse);
     }
 }

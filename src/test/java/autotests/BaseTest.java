@@ -31,15 +31,28 @@ public class BaseTest extends TestNGCitrusSpringSupport {
     }
 
     //валидация данных
-    public void validateResponse(TestCaseRunner runner, HttpStatus status, String responseMessage) {
+    public void validateResponse(TestCaseRunner runner, HttpClient httpClient, HttpStatus status, String responseMessage) {
         runner.$(
                 http()
-                        .client(duckService)
+                        .client(httpClient)
                         .receive()
                         .response(status)
                         .message()
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .body(responseMessage)
+        );
+    }
+
+    //валидация данных с использованием payloads
+    public void validateResponsePayloads(TestCaseRunner runner, HttpClient httpClient, HttpStatus status, Object expectedPayload) {
+        runner.$(
+                http()
+                        .client(httpClient)
+                        .receive()
+                        .response(status)
+                        .message()
+                        .type(MessageType.JSON)
+                        .body(new ObjectMappingPayloadBuilder(expectedPayload, new ObjectMapper()))
         );
     }
 

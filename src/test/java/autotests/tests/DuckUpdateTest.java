@@ -34,7 +34,7 @@ public class DuckUpdateTest extends DuckActionClient {
         DuckUpdateResponse expectedResponse = new DuckUpdateResponse()
                 .message("Duck with id = ${duckId} is updated");
 
-        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.OK, expectedResponse);
         validateDuckInDatabase(runner, "${duckId}", "green", "10.0", "rubber", "quack", "ACTIVE");
     }
 
@@ -55,7 +55,7 @@ public class DuckUpdateTest extends DuckActionClient {
         DuckUpdateResponse expectedResponse = new DuckUpdateResponse()
                 .message("Duck with id = ${duckId} is updated");
 
-        validateResponsePayloads(runner, HttpStatus.OK, expectedResponse);
+        validateResponsePayloads(runner, duckService, HttpStatus.OK, expectedResponse);
         validateDuckInDatabase(runner, "${duckId}", "green", "5.0", "rubber", "quuaack", "ACTIVE");
     }
 }
